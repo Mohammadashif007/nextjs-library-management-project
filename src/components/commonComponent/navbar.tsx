@@ -16,7 +16,7 @@ import Link from "next/link"
 // Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
   { href: "#", label: "Home", active: true },
-  { href: "#", label: "Features" },
+  { href: "/add-book", label: "Add Book" },
   { href: "#", label: "Pricing" },
   { href: "#", label: "About" },
 ]
