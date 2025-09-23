@@ -12,14 +12,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { createBook } from "./actions";
 
-interface AddBookFormValues {
+ interface AddBookFormValues {
     title: string;
     author: string;
     category: string;
     isbn: string;
     publication_year: number;
     copies: number;
-    images: FileList;
+    // images: FileList;
 }
 
 const AddBook = () => {
@@ -31,11 +31,16 @@ const AddBook = () => {
             isbn: "",
             publication_year: 0,
             copies: 0,
-            images: undefined as unknown as FileList,
+            // images: undefined as unknown as FileList,
         },
     });
     const onSubmit = async (value: AddBookFormValues) => {
-        const res = await createBook(value);
+        const parsedValue = {
+            ...value,
+            publication_year: Number(value.publication_year),
+            copies: Number(value.copies),
+        };
+        const res = await createBook(parsedValue);
         console.log("✅ Book created", res);
     };
     return (
@@ -134,7 +139,7 @@ const AddBook = () => {
                                 </FormItem>
                             )}
                         />
-                        <FormField
+                        {/* <FormField
                             control={form.control}
                             name="images"
                             render={({ field }) => (
@@ -151,7 +156,7 @@ const AddBook = () => {
                                     </FormControl>
                                 </FormItem>
                             )}
-                        />
+                        /> */}
                         <Button>Create</Button>
                     </form>
                 </Form>
