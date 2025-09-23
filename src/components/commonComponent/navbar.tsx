@@ -16,7 +16,7 @@ const navigationLinks = [
     { href: "/", label: "Home" },
     { href: "/add-book", label: "Add Book" },
     { href: "/all-books", label: "All Books" },
-    { href: "#", label: "About" },
+    { href: "/image-upload", label: "Image Upload" },
 ];
 
 export default function Navbar() {

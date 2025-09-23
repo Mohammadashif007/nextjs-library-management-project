@@ -1,6 +1,13 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import {  Edit, LucideDelete, Trash } from "lucide-react";
 import React from "react";
-
 
 export interface BookValue {
     title: string;
@@ -34,6 +41,14 @@ const BookCard = ({ book }: { book: BookValue }) => {
                     <span className="font-medium">Copies:</span> {copies}
                 </p>
             </CardContent>
+            <CardFooter className="flex gap-3">
+                {/* <Button>
+                    <Edit></Edit>Edit
+                </Button> */}
+                <Button>
+                   Details
+                </Button>
+            </CardFooter>
         </Card>
     );
 };

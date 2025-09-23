@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,18 +9,18 @@ import {
     FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { createBook } from "./actions";
 
- interface AddBookFormValues {
+export interface AddBookFormValues {
     title: string;
     author: string;
     category: string;
     isbn: string;
     publication_year: number;
     copies: number;
-    // images: FileList;
+    images?: string[];
 }
 
 const AddBook = () => {
@@ -31,15 +32,39 @@ const AddBook = () => {
             isbn: "",
             publication_year: 0,
             copies: 0,
+
             // images: undefined as unknown as FileList,
         },
     });
+    const [files, setFiles] = useState<FileList | null>(null);
     const onSubmit = async (value: AddBookFormValues) => {
         const parsedValue = {
             ...value,
             publication_year: Number(value.publication_year),
             copies: Number(value.copies),
         };
+
+        //! Upload images first and collect URLs
+        const imageUrls: string[] = [];
+        if (files && files.length > 0) {
+            for (const f of Array.from(files)) {
+                const fd = new FormData();
+                fd.append("file", f);
+                const res = await fetch("/api/upload", {
+                    method: "POST",
+                    body: fd,
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data?.error || "Image upload failed");
+                }
+                imageUrls.push(data.url);
+            }
+            //! attach URLs to the payload and call your action
+            const payload: any = { ...parsedValue, images: imageUrls };
+            const res = await createBook(payload);
+            console.log("✅ Book created", res);
+        }
         const res = await createBook(parsedValue);
         console.log("✅ Book created", res);
     };
@@ -157,6 +182,18 @@ const AddBook = () => {
                                 </FormItem>
                             )}
                         /> */}
+                        <div>
+                            <label className="block text-sm font-medium">
+                                Book images
+                            </label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                onChange={(e) => setFiles(e.target.files)}
+                                className="mt-1"
+                            />
+                        </div>
                         <Button>Create</Button>
                     </form>
                 </Form>
