@@ -8,8 +8,8 @@ interface FormValues {
     author: string;
     isbn: string;
     category: string;
-    copies: string;
-    publication_year: string;
+    copies: number;
+    publication_year: number;
 }
 
 export const createBook = async (data: FormValues) => {

@@ -8,18 +8,18 @@ import {
     FormLabel,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createBook } from "@/lib/actions/actions";
 import React from "react";
 import { useForm } from "react-hook-form";
-
+import { createBook } from "./actions";
 
 interface AddBookFormValues {
     title: string;
     author: string;
     category: string;
     isbn: string;
-    publication_year: string;
-    copies: string;
+    publication_year: number;
+    copies: number;
+    images: FileList;
 }
 
 const AddBook = () => {
@@ -29,8 +29,9 @@ const AddBook = () => {
             author: "",
             category: "",
             isbn: "",
-            publication_year: "",
-            copies: "",
+            publication_year: 0,
+            copies: 0,
+            images: undefined as unknown as FileList,
         },
     });
     const onSubmit = async (value: AddBookFormValues) => {
@@ -128,6 +129,24 @@ const AddBook = () => {
                                         <Input
                                             placeholder="Copies Available"
                                             {...field}
+                                        />
+                                    </FormControl>
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="images"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Book Image</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            type="file"
+                                            multiple
+                                            onChange={(e) =>
+                                                field.onChange(e.target.files)
+                                            }
                                         />
                                     </FormControl>
                                 </FormItem>

@@ -18,10 +18,29 @@ model Books {
   id              Int      @id @default(autoincrement())
   title           String
   author          String
-  copies          String
+  copies          Int
   category        String
   isbn            String
-  publicationYear String
+  publicationYear Int
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+
+  images BookImage[]
+
+  @@map("book")
+}
+
+model BookImage {
+  id        Int      @id @default(autoincrement())
+  book      Books    @relation(fields: [bookId], references: [id])
+  bookId    Int
+  url       String
+  provider  String
+  publicId  String?
+  width     Int?
+  height    Int?
+  mime      String?
+  size      Int?
+  alt       String?
+  createdAt DateTime @default(now())
 }
